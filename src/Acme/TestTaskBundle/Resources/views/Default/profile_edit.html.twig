@@ -1,0 +1,10 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form.firstName) }}
+        {{ form_widget(form.lastName) }}
+        {{ form_widget(form.save, { 'attr' : { 'class' : 'btn btn-success btn-sm' } }) }}
+        
+    {{ form_end(form) }}
+{% endblock %}    

@@ -1,0 +1,15 @@
+parameters:
+    fb_provider.class:      Acme\TestTaskBundle\Service\FacebookService
+    user_provider.class: Acme\TestTaskBundle\Security\User\EntityUserProvider
+    user.class: Acme\TestTaskBundle\Entity\User
+ 
+services:
+    fb_provider:
+        class:        "%fb_provider.class%"
+        arguments:    
+            app_id: 281723065353498
+            app_secret: 637a801ab3e2d41fac648c1b95e7547f
+            router: "@router"          
+    user_provider:
+        class: "%user_provider.class%"
+        arguments: [@doctrine, "%user.class%", {facebook: facebookId}]

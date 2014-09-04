@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}TestTask{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/acmetesttask/css/yeti.css') }}" />      
+        {% endblock %}
+        {% block javascript %} 
+            <script src="http://code.jquery.com/jquery-latest.min.js"
+                type="text/javascript"></script>               
+        {% endblock %}        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <style type="text/css">
+            .navbar_padding {
+                padding-top: 50px;
+            }
+        </style>       
+    </head>
+    <body class="navbar_padding">
+        {% if is_granted('ROLE_USER') %}
+        <div class="navbar navbar-default navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <a href="{{ url('index')}}" class="navbar-brand">TestTask</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{ url('profile_edit') }}">Изменить профиль</a>
+                </li>
+                <li>
+                    <a href="{{ url('add_post') }}">Написать комментарий</a>
+                </li>
+                <li>
+                    <a href="{{ url('logout') }}">Выход</a>
+                </li>                
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+
+
+        <div id="container" class="container">
+             {% block body %}{% endblock %}
+        </div>
+
+
+    </body>
+</html>

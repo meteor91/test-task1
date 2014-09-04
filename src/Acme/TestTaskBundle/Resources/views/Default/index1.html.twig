@@ -1,0 +1,115 @@
+{% extends "::base.html.twig" %}
+
+{% block javascript %}
+    {{ parent() }}
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#add_post').on('click', function() {
+               $('.modal').css('display', 'inline')
+            })
+            
+            
+            $('.close:button').on('click', function(){
+               $('.modal').css('display', 'none');
+               $('.modal-body').html('');
+            })
+            
+            $('.edit:button').each(function(){
+                var data = $(this).attr('data');
+                //alert(data);
+                $(this).on('click', function(){
+                    var body = $(this).parent().parent().children().last();
+                   // alert(data);
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ url('edit_form', {'id': '0'}) }}".replace("0", data),
+                        success: function(html) {
+                            $('.modal').css('display', 'inline');
+                            $('.modal-body').html(html);
+                            
+                            $(document).on('submit', '#ajax_edit_form', function (ev) {
+                                var frm = $(this);
+                                ev.preventDefault();
+                                $.ajax({
+                                    type: frm.attr('method'),
+                                    url: frm.attr('action'),
+                                    data: frm.serialize(),
+                                    success: function (post) {
+                                        //var o = JSON.parse(data.data);
+                                        //alert(o.text);
+                                        $('#post_'+post.id).children().last().html(post.text);
+                                        $('#post_'+post.id).find('.updated').html('upd: '+ post.lastChangedAt);
+                                        //body.html(post.text);
+                                    }
+                                });
+                                $('.modal').css('display', 'none');
+                                $('.modal-body').html('');
+                                
+                                //return false;
+                            });
+                        }                        
+                    })
+                })
+            })
+        })
+    </script>                       
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-4">
+            <h3>Я:</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <img src="https://graph.facebook.com/{{user.facebookId}}/picture">
+                    {{ user.firstName }} {{ user.lastName }}
+                </div>
+            </div>              
+            <h3>Друзья:</h3>
+            <ul class="list-group">
+            {% for friend in friends %}
+                <li class="list-group-item">
+                    <img src="https://graph.facebook.com/{{friend.id}}/picture">
+                    {{ friend.name }} 
+                </li>
+            {% endfor %}
+            </ul>                    
+        </div>
+        <div class="col-lg-8"> 
+            <h3>Комментарии</h3>
+            {% for post in posts %}
+                <div class="panel panel-default" id="post_{{ post.id }}">
+                    <div class="panel-heading">
+                        {{  post.user.id }} | by: {{ post.user.username }} at: {{ post.createdAt | date('H:i m-d-Y') }} 
+                        <span class="updated">
+                        {% if post.lastChangedAt is not null %}
+                            upd: {{ post.lastChangedAt | date('H:i m-d-Y') }} 
+                        {% endif %}
+                        </span>
+                        {% if post.user.id == user.id %}                            
+                            <button type="button" data="{{ post.id }}" class ="pull-right btn btn-warning btn-xs edit">edit</button>
+                        {% endif %}
+                    </div>
+                    <div class="panel-body">
+                        {{ post.text }}
+                    </div>
+                </div>                    
+            {% endfor %}            
+        </div>
+    </div>
+
+            
+<div class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Редактировать комментарий</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+    </div>
+  </div>
+</div>            
+{% endblock %}

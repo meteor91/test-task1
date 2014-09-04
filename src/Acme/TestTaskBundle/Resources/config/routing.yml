@@ -1,0 +1,7 @@
+#acme_test_task_homepage:
+#    pattern:  /hello/{name}
+#    defaults: { _controller: AcmeTestTaskBundle:Default:index }
+_test:
+    resource: "@AcmeTestTaskBundle/Controller/DefaultController.php"
+    type:     annotation
+    prefix:   /

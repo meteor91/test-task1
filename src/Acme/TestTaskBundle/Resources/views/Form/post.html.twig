@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+{% block post_widget %}
+
+    {% block content %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 {{ form_label(form.text) }} 
+            </div>
+            <div class="panel-body">
+                {{ form_widget(form.text, { 'attr' : {'cols' : 30, 'rows' : 5} } ) }}<br/>
+                {{ form_widget(form.save, { 'attr' : {'class': 'btn btn-primary btn-sm'} } ) }} 
+
+            </div>
+        </div>
+    {% endblock %}
+
+{% endblock %}

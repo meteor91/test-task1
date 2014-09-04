@@ -1,0 +1,9 @@
+{% spaceless %}
+{{ form_start(form, {'attr': {'id' : 'ajax_edit_form'} } ) }}
+<p>{{ form_label(form.text) }}<p>
+    
+    {{ form_widget(form.text, { 'attr' : {'cols' : 50, 'rows' : 5} } ) }}<br/>
+    {{ form_widget(form.save, { 'attr' : {'class': 'btn btn-primary btn-sm'} } ) }} 
+{{ form_end(form) }}
+{% endspaceless %}
+
