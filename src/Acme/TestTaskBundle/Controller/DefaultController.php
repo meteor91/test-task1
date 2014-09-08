@@ -12,24 +12,7 @@ use Acme\TestTaskBundle\Entity\Post;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/fb-check", name="fb_check")
-     * @Template()
-     */   
-    public function checkAction(Request $request) {
-        $session = $this->get('session');
-        $session->start();
-        $fb_provider = $this->get('fb_provider');
-        $code = $session->get('fb_token');
-        if($code==null) {
-            $code = $fb_provider->getToken();
-            $session->set('fb_token', $code);
-        }
-        $data = $fb_provider->getUserData($code);
-        return $this->render('AcmeTestTaskBundle:Default:index.html.twig', 
-                array('data' =>$data , 'session' => $session));
-    }
-    
+
     /**
      * @Route("/login", name="fb_login")
      * @Template()
